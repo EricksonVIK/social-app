@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-app.use(require("./routes"));
+// app.use(require("./routes"));
 
 // tells which database to connect - MONGODB_URI is the heroku app in environmental variable
 mongoose.connect(
