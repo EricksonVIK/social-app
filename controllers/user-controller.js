@@ -14,7 +14,9 @@ const UserController = {
       });
   },
   // get single user w _id
-  getUserById(req, res) {},
+  getUserById({ params }, res) {
+    User.findOne({ _id: params.id }).then((dbUserData) => res.json(dbUserData));
+  },
   // post new user
   createUser({ body }, res) {
     User.create(body)
