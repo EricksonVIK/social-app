@@ -9,16 +9,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-// app.use(require("./routes"));
+app.use(require("./routes"));
 
 // tells which database to connect - MONGODB_URI is the heroku app in environmental variable
-mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/pizza-hunt",
-  {
+mongoose
+  .connect(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/social-app", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  }
-);
+  })
+  .then(() => {
+    console.log(`-----Connected to Mongo!-----`);
+  })
+  .catch((err) => {
+    console.log(`-----*!No Mongo Connection!*-----`);
+  });
 
 // Use this to log mongo queries being executed!
 mongoose.set("debug", true);
