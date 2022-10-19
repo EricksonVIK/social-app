@@ -9,6 +9,6 @@ const thoughtRoutes = require("./thought-routes");
 // users
 router.use("/users", userRoutes);
 // thoughts
-
+router.use("/thoughts", thoughtRoutes);
 // export routes
 module.exports = router;

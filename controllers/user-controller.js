@@ -1,5 +1,5 @@
 // import model
-const { User } = require("../models");
+const { User, Thought } = require("../models");
 
 // User Controller
 // how do i add in friends?
@@ -7,6 +7,9 @@ const UserController = {
   // get all users
   getAllUsers(req, res) {
     User.find({})
+      .populate({
+        path: "thoughts",
+      })
       .then((dpUserData) => res.json(dpUserData))
       .catch((err) => {
         console.log(err);
@@ -24,9 +27,40 @@ const UserController = {
       .catch((err) => res.status(400).json(err));
   },
   // put update user w _id
-  updateUser(req, res) {},
+  updateUser({ params, body }, res) {
+    User.findOneAndUpdate({ _id: params.id }, body, {
+      new: true,
+      runValidators: true,
+    }).then((dbUserData) => res.json(dbUserData))
+      .catch((err) => res.status(400).json(err));
+  },
   // Delete user w _id -- delete associated thoughts and reactions
-  deleteUser(req, res) {},
+  deleteUser({ params }, res) {
+    //   delete associated Thoughts?
+    User.findOneAndDelete({ _id: params.id })
+    .then((dbUserData) => res.json(dbUserData))
+    .catch((err) => res.status(400).json(err));
+  },
+  // Add a friend
+  addFriend({ params }, res) {
+    User.findOneAndUpdate(
+      { _id: params.userId },
+      { $push: { friends: params.friendId } },
+      { new: true }
+    )
+      .then((dbUserData) => res.json(dbUserData))
+      .catch((err) => res.status(400).json(err));
+  },
+  // Delete a friend
+  deleteFriend({ params }, res) {
+    User.findOneAndUpdate(
+      { _id: params.userId },
+      { $pull: { friends: params.friendId } },
+      { new: true }
+    )
+      .then((dbUserData) => res.json(dbUserData))
+      .catch((err) => res.status(400).json(err));
+  },
 };
 
 // export controller

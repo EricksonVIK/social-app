@@ -15,7 +15,7 @@ const UserSchema = new Schema(
       // validate email
       match: [/.+\@.+\..+/, "Please enter a valid email address."],
     },
-    thoughst: [
+    thoughts: [
       {
         type: Schema.Types.ObjectId,
         ref: "Thought",
@@ -31,17 +31,17 @@ const UserSchema = new Schema(
   {
     toJSON: {
       virtuals: true,
+      getters: true,
     },
   }
 );
 
 // Create the User Model using Schema
-const User = model("User", UserSchema)
+const User = model("User", UserSchema);
 
 // Friend count/tracking
 UserSchema.virtual("friendCount").get(function () {
-    return this.friends.length;
+  return this.friends.length;
 });
 
 module.exports = User;
-

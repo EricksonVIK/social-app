@@ -11,7 +11,8 @@ const ReactionSchema = new Schema({
     type: String,
     required: true,
     // validate maximum 280 characters
-    match: /\w{0-280}/
+    // match: /\w{0-280}/
+    maxlength: 280
   },
     username: {
     //   how do i link user?
@@ -36,8 +37,8 @@ const ThoughtSchema = new Schema(
       type: String,
       required: true,
       // validate 1-280 characters
-      match: /\w{1-280}/
-
+    //   match: /\w{1-280}/
+        maximumlength:280
     },
     createdAt: {
       type: Date,
