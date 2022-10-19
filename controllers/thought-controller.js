@@ -50,11 +50,11 @@ const thoughtController = {
       .catch((err) => res.status(400).json(err));
   },
   // remove reply
-  deleteReply({ params, body }, res) {
+  deleteReply({ params }, res) {
     Thought.findOneAndUpdate(
       { _id: params.thoughtId },
       {
-        $pull: { reactions: body },
+        $pull: { reactions: params.reactionId },
       },
       { new: true }
     )
