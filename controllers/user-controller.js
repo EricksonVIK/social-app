@@ -72,8 +72,11 @@ const UserController = {
             .json({ message: "No user with provided information." });
           return;
         }
-        res.json(dbUserData);
-      })
+        return Thought.deleteMany({
+          _id: dbUserData.thoughts
+        })
+        ;
+      }).then(() => res.json({message: "User deleted!"}))
       .catch((err) => {
         console.log(err);
         res.status(400).json(err);

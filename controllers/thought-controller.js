@@ -7,7 +7,25 @@ const thoughtController = {
     Thought.find({}).then((dbThoughtData) => res.json(dbThoughtData));
   },
   // get single by _id
-  getSingleThought(req, res) {},
+  getSingleThought({ params }, res) {
+    Thought.findOne({ _id: params.id })
+      .then((dbThoughtData) => {
+        if (!dbThoughtData) {
+          res
+            .status(400)
+            .json({
+              message: "Couldn't find your thought, check ID and try again!",
+            });
+          return;
+        }
+        res.json(dbThoughtData);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
+  },
+
   // Post new thoughts - push to user thought array
   addThought({ body }, res) {
     Thought.create(body)
@@ -56,7 +74,7 @@ const thoughtController = {
     Thought.findOneAndUpdate(
       { _id: params.thoughtId },
       {
-        $pull: { reactions: {_id: params.reactionId }},
+        $pull: { reactions: { _id: params.reactionId } },
       },
       { new: true }
     )
