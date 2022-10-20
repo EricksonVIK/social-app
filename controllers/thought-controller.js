@@ -36,6 +36,8 @@ const thoughtController = {
     Thought.findOneAndDelete({ _id: params.thoughtId })
       // returns the deleted thought info
       .then((dbDeletedThought) => res.json(dbDeletedThought));
+    // return json message
+    // .then({message: "Your thought has been deleted."})
   },
   // add reply
   addReply({ params, body }, res) {

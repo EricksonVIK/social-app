@@ -18,7 +18,20 @@ const UserController = {
   },
   // get single user w _id
   getUserById({ params }, res) {
-    User.findOne({ _id: params.id }).then((dbUserData) => res.json(dbUserData));
+    User.findOne({ _id: params.id })
+      .then((dbUserData) => {
+        if (!dbUserData) {
+          res
+            .status(400)
+            .json({ message: "No user with provided information." });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
   // post new user
   createUser({ body }, res) {
@@ -31,15 +44,40 @@ const UserController = {
     User.findOneAndUpdate({ _id: params.id }, body, {
       new: true,
       runValidators: true,
-    }).then((dbUserData) => res.json(dbUserData))
-      .catch((err) => res.status(400).json(err));
+    })
+      .then((dbUserData) => {
+        if (!dbUserData) {
+          res
+            .status(400)
+            .json({ message: "No user with provided information." });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
-  // Delete user w _id -- delete associated thoughts and reactions
+  // Delete user w _id -- delete associated thoughts
   deleteUser({ params }, res) {
     //   delete associated Thoughts?
     User.findOneAndDelete({ _id: params.id })
-    .then((dbUserData) => res.json(dbUserData))
-    .catch((err) => res.status(400).json(err));
+      // insert a deleteMany() to delete any thought with user name
+      // Thought.deleteMany({})
+      .then((dbUserData) => {
+        if (!dbUserData) {
+          res
+            .status(400)
+            .json({ message: "No user with provided information." });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
   // Add a friend
   addFriend({ params }, res) {

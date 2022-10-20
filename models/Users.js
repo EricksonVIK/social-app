@@ -43,5 +43,9 @@ const User = model("User", UserSchema);
 UserSchema.virtual("friendCount").get(function () {
   return this.friends.length;
 });
+// User Thought count/tracking
+UserSchema.virtual("thoughtCount").get(function () {
+  return this.thoughts.length;
+})
 
 module.exports = User;
