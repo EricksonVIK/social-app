@@ -63,7 +63,6 @@ const UserController = {
   deleteUser({ params }, res) {
     //   delete associated Thoughts?
     User.findOneAndDelete({ _id: params.id })
-      // insert a deleteMany() to delete any thought with user name
       // Thought.deleteMany({})
       .then((dbUserData) => {
         if (!dbUserData) {
