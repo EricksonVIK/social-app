@@ -1,3 +1,4 @@
+// Thought Routes
 const router = require("express").Router();
 
 // import functionality from controllers

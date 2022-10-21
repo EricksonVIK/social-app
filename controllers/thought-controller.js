@@ -4,18 +4,21 @@ const { Thought, User } = require("../models");
 const thoughtController = {
   // get all thoughts
   getAllThoughts(req, res) {
-    Thought.find({}).then((dbThoughtData) => res.json(dbThoughtData));
+    Thought.find({})
+      .then((dbThoughtData) => res.json(dbThoughtData))
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
   // get single by _id
   getSingleThought({ params }, res) {
     Thought.findOne({ _id: params.id })
       .then((dbThoughtData) => {
         if (!dbThoughtData) {
-          res
-            .status(400)
-            .json({
-              message: "Couldn't find your thought, check ID and try again!",
-            });
+          res.status(400).json({
+            message: "Couldn't find your thought, check ID and try again!",
+          });
           return;
         }
         res.json(dbThoughtData);
@@ -37,7 +40,11 @@ const thoughtController = {
           { new: true }
         );
       })
-      .then((dbThoughtData) => res.json(dbThoughtData));
+      .then((dbThoughtData) => res.json(dbThoughtData))
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
   // Put to update thought
   updateThought({ params, body }, res) {
@@ -45,17 +52,32 @@ const thoughtController = {
       new: true,
       runValidators: true,
     })
-      .then((dbThoughtData) => res.json(dbThoughtData))
-      .catch((err) => res.status(400).json(err));
+      .then((dbThoughtData) => {
+        if (!dbThoughtData) {
+          res.status(400).json({
+            message: "Couldn't find your thought, check ID and try again!",
+          });
+          return;
+        }
+        res.json(dbThoughtData);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
 
   // delete thought and associated reactions
   deleteThought({ params }, res) {
     Thought.findOneAndDelete({ _id: params.thoughtId })
       // returns the deleted thought info
-      .then((dbDeletedThought) => res.json(dbDeletedThought));
-    // return json message
-    // .then({message: "Your thought has been deleted."})
+      .then((dbDeletedThought) => res.json(dbDeletedThought))
+      // return json message
+      // .then({message: "Your thought has been deleted."})
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
   // add reply
   addReply({ params, body }, res) {
@@ -67,7 +89,10 @@ const thoughtController = {
       { new: true }
     )
       .then((dbReactionData) => res.json(dbReactionData))
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
   // remove reply
   deleteReply({ params }, res) {
@@ -79,7 +104,10 @@ const thoughtController = {
       { new: true }
     )
       .then((dbReactionData) => res.json(dbReactionData))
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json(err);
+      });
   },
 };
 

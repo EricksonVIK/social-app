@@ -1,3 +1,4 @@
+// Require Express and Mongoose
 const express = require("express");
 
 const app = express();
